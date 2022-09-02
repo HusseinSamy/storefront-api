@@ -12,3 +12,5 @@ users.get('/:id', () => {
 users.post('/', () => {
 
 })
+
+export default users;
