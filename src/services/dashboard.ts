@@ -1,7 +1,4 @@
-export class DashboardQueries{
-    async getTop5PopularProducts(){}
-    async getProductByCategory(category: string){}
-    //Token required
-    async getCompletedOrdersByUser(user_id: number) {}
-
-}
+export const getTop5PopularProducts = async()=> {}
+export const  getProductByCategory = async(category: string)=> {}
+//Token required
+export const getCompletedOrdersByUser = (user_id: number)=> {}
