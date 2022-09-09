@@ -1,16 +1,10 @@
 import express from 'express'
+import productsRouter from '../../handlers/products';
 
 const products = express.Router();
 
-products.get('/', () => {
-    
-})
-products.get('/:id', () => {
+productsRouter(products);
 
-})
-products.post('/', () => {
-
-})
 products.get('/top5', () => {
 
 })
