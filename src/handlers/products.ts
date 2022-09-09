@@ -3,7 +3,7 @@ import ProductModel, { IProduct }  from "../models/products";
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import { getTop5PopularProducts } from "../services/dashboard";
-import authorize from "../middlewares/authentication";
+import authorize from "../middlewares/authorization";
 
 dotenv.config();
 
