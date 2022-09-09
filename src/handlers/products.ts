@@ -2,21 +2,33 @@ import { Request, Response, Router } from "express";
 import ProductModel, { IProduct }  from "../models/products";
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
+import { getTop5PopularProducts } from "../services/dashboard";
 
 dotenv.config();
 
 const Products = new ProductModel();
 
-export const index = async(_req: Request, res: Response)=> {
-    const result = await Products.index();
-    res.send(result);
+const index = async(_req: Request, res: Response)=> {
+    try{
+        const result = await Products.index();
+        res.send(result);
+    }
+    catch(err){
+        throw new Error(`error happened while retrieving all product: ${err}`);
+    }
 }
-export const show = async(req: Request, res: Response)=> {
-    const result = await Products.show(+req.params.id);
-    res.send(result);
+const show = async(req: Request, res: Response)=> {
+    try{
+        const result = await Products.show(+req.params.id);
+        res.send(result);
+    }
+    catch(err){
+        throw new Error(`error happened while retrieving product with id ${req.params.id}: ${err}`);
+    }
 }
+    
 //Requires token
-export const create = async (req: Request, res: Response)=> {
+const create = async (req: Request, res: Response)=> {
     const product: IProduct = {
         name: req.body.name , 
         price: req.body.price, 
@@ -39,11 +51,20 @@ export const create = async (req: Request, res: Response)=> {
     }
     
 }
-
+const top5 = async(_req: Request, res: Response) => {
+    try{
+        const result = await getTop5PopularProducts();
+        res.send(result);
+    }
+    catch(err){
+        throw new Error(`error happened while retrieving last 5 products: ${err}`);
+    }
+}
 
 const productsRouter = (app: Router) => {
+    app.get('/top5', top5);
+    app.get('/:id', show);  
     app.get('/', index);
-    app.get('/:id', show);
     app.post('/', create);
 }
 
