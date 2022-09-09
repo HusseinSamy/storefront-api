@@ -3,6 +3,7 @@ import ProductModel, { IProduct }  from "../models/products";
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import { getTop5PopularProducts } from "../services/dashboard";
+import authorize from "../middlewares/authentication";
 
 dotenv.config();
 
@@ -35,13 +36,6 @@ const create = async (req: Request, res: Response)=> {
         category: req.body.category
     };
     try{
-        jwt.verify(req.body.token, process.env.TOKEN_SECRET!);
-    }
-    catch(err){
-        res.status(401);
-        throw new Error(`Error happened while verifying the token: ${err}`)
-    }
-    try{
 
        const result = await Products.create(product);
        res.send(result);
@@ -65,7 +59,7 @@ const productsRouter = (app: Router) => {
     app.get('/top5', top5);
     app.get('/:id', show);  
     app.get('/', index);
-    app.post('/', create);
+    app.post('/', authorize, create);
 }
 
 export default productsRouter;
