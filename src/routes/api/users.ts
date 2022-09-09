@@ -1,16 +1,8 @@
 import express from 'express'
+import usersRouter from '../../handlers/users';
 
 const users = express.Router();
 
-
-users.get('/', () => {
-    
-})
-users.get('/:id', () => {
-
-})
-users.post('/', () => {
-
-})
+usersRouter(users);
 
 export default users;
