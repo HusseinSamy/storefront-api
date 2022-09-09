@@ -1,10 +1,8 @@
 import express from 'express'
+import ordersRouter from '../../handlers/orders';
 
 const orders = express.Router();
 
-
-orders.get('/:', () => {
-
-})
+ordersRouter(orders)
 
 export default orders;
