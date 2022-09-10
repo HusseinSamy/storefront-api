@@ -1,6 +1,6 @@
 import { database } from "../database";
 
-export interface IProduct {
+export type Product = {
     id?: number, 
     name: string,
     price: number,
@@ -8,7 +8,7 @@ export interface IProduct {
 }
 
 export class ProductModel{
-    async index (): Promise<IProduct[]> {
+    async index (): Promise<Product[]> {
         try{
             const connection = await database.connect();
             const sql = `SELECT * FROM products`;
@@ -20,7 +20,7 @@ export class ProductModel{
             throw new Error(`Cannot retrive data from the database: ${err}`);
         }
     }
-    async show (id: number): Promise<IProduct> {
+    async show (id: number): Promise<Product> {
         try{
             const connection = await database.connect();
             const sql = `SELECT * FROM products WHERE id = $1`;
@@ -34,7 +34,7 @@ export class ProductModel{
     }
 
     //Requires token
-    async create (product: IProduct): Promise<IProduct> {
+    async create (product: Product): Promise<Product> {
         try{
             const connection = await database.connect();
             const sql = `INSERT INTO products (name, price, category) VALUES ($1,$2,$3) RETURNING *`;
