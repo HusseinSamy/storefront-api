@@ -9,7 +9,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Show     --------------------------------Done--------------------------------
 - Create [token required]     --------------------------------Done--------------------------------
 - [OPTIONAL] Top 5 most popular products     --------------------------------Done--------------------------------
-- [OPTIONAL] Products by category (args: product category)     --------------------------------Left--------------------------------
+- [OPTIONAL] Products by category (args: product category)     --------------------------------Done--------------------------------
 
 #### Users
 - Index [token required]     --------------------------------Done--------------------------------
@@ -18,7 +18,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Orders
 - Current Order by user (args: user id)[token required]     --------------------------------Done--------------------------------
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]     --------------------------------Left--------------------------------
+- [OPTIONAL] Completed Orders by user (args: user id)[token required]     --------------------------------Done--------------------------------
 
 ## Data Shapes
 #### Product
