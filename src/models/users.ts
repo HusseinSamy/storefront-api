@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-export interface IUser {
+export type User = {
     id?: number,
     firstName: string,
     lastName: string, 
@@ -12,7 +12,7 @@ export interface IUser {
 }
 
 export class UsersModel {
-    async index (): Promise<IUser[]>{
+    async index (): Promise<User[]>{
         try{
             const connection = await database.connect(); 
             const sql = `SELECT * FROM users`;
@@ -24,7 +24,7 @@ export class UsersModel {
             throw new Error(`error while accessing the database: ${err}`);  
         }
     }
-    async show (id: number): Promise<IUser>{
+    async show (id: number): Promise<User>{
         try{
             const connection = await database.connect(); 
             const sql = `SELECT * FROM users WHERE id = $1`;
@@ -36,14 +36,14 @@ export class UsersModel {
             throw new Error(`error while accessing the database: ${err}`);
         }
     }
-    async create (user: IUser){
+    async create (user: User): Promise<User> {
         try{
             const connection = await database.connect(); 
             const sql = `INSERT INTO users (first_name, last_name, password) VALUES ($1,$2,$3) RETURNING *`;
             const hash = bcrypt.hashSync(user.password + process.env.BCRYPT_PASSWORD, +process.env.SALT_ROUNDS!);
             const result = await database.query(sql,[user.firstName, user.lastName, hash]);
             connection.release();
-            return result.rows;
+            return result.rows[0];
         }
         catch(err) {
             throw new Error(`error while accessing the database: ${err}`);
