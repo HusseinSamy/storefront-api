@@ -12,7 +12,7 @@ const authorize = async(req:any, res:Response, next:NextFunction) => {
     }
     catch(err){
         res.status(401);
-        throw new Error(`Error happended while validating token: ${err}`);
+        res.send(`Error happended while validating token: ${err}`);
     }
     next();
 }
