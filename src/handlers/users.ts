@@ -14,6 +14,8 @@ const index = async (_req: Request, res: Response): Promise<User[]>  =>{
         return result;
     }
     catch(err){
+        res.status(401);
+        res.send(`Error happened while returning user with id: ${err}`);
         throw new Error(`Error happened while returning all users: ${err}`);
     }
 }
@@ -25,6 +27,8 @@ const show = async (req: Request, res: Response): Promise<User> =>{
         return result;
     }
     catch(err){
+        res.status(401);
+        res.send(`Error happened while returning user with id ${req.params.id}: ${err}`);
         throw new Error(`Error happened while returning user with id ${req.params.id}: ${err}`);
     }
 }
