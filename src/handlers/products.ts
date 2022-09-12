@@ -19,14 +19,22 @@ const index = async(_req: Request, res: Response): Promise<Product[]> => {
         throw new Error(`error happened while retrieving all product: ${err}`);
     }
 }
-const show = async(req: Request, res: Response): Promise<Product> => {
+const show = async(req: Request, res: Response): Promise<(Product|null)> => {
     try{
         const result = await Products.show(+req.params.id);
         res.send(result);
-        return result;
+        if(result)
+        {
+            return result;
+        }
+        else{
+            throw new Error(`error happened while retrieving product with id ${req.params.id}`);
+        }
     }
     catch(err){
-        throw new Error(`error happened while retrieving product with id ${req.params.id}: ${err}`);
+        res.status(400);
+        res.send(err);
+        return null;
     }
 }
     
@@ -44,6 +52,7 @@ const create = async (req: Request, res: Response): Promise<Product> => {
        return result;
     }
     catch(err){
+        res.send(err);
         throw new Error(`error happened while creating product: ${err}`);
     }
     
