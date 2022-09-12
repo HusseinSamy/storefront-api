@@ -33,23 +33,31 @@ const show = async (req: Request, res: Response): Promise<User> =>{
     }
 }
 
-const create = async (req: Request, res: Response): Promise<User> => {
+const create = async (req: Request, res: Response):Promise<(User|null)> => {
     
-    const user: User = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    password: req.body.password
-}
-try{
-    const newUser = await Users.create(user);
-    const token = jwt.sign({user: newUser}, process.env.TOKEN_SECRET!);
-    res.cookie("token", token,{httpOnly: true});
-    res.send(token);
-    return newUser;
-}
-catch(err){
-    throw new Error(`Error happened while creating user: ${err}`);
-}
+    try{
+        if(req.body.firstName !== undefined && req.body.lastName !== undefined && req.body.password !== undefined){
+            const user: User = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                password: req.body.password
+            }
+            const newUser = await Users.create(user);
+            const token = jwt.sign({user: newUser}, process.env.TOKEN_SECRET!);
+            res.cookie("token", token,{httpOnly: true});
+            res.send(token);
+            return newUser;
+        }
+        else {
+            res.status(400);
+            throw new Error(`Please enter valid body params`);
+        }
+    }
+    catch(err){
+        res.send((err as Error).message);
+        return null;
+    }
+    
 
 }
 const usersRouter = (app: Router) => {
