@@ -56,4 +56,24 @@ describe('API endpoint tests suite', () => {
             expect(response.status).toBe(200);
         });
     });    
+    describe('Status Codes tests for /orders', () => {
+        it('expects to return 401', async () => {
+            const response = await request.post('/orders')
+            .set("content-type","application/json")
+            .send(JSON.stringify({status: "completed"}));
+            expect(response.status).toBe(401);
+        });
+        it('expects to return 401', async () => {
+            const response = await request.get('/orders/2')
+                expect(response.status).toBe(401);
+        });
+        it('expects to return 401', async () => {
+            const response = await request.get('/orders/1/products')
+            expect(response.status).toBe(401);
+        });
+        it('expects to return 401', async () => {
+            const response = await request.get('/orders/completedOrdersByUser/1')
+            expect(response.status).toBe(401);
+        });
+    });    
 });
