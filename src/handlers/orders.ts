@@ -32,19 +32,26 @@ export const show = async(req: Request, res: Response): Promise<Order[]>=> {
     }
     
 }
-export const create = async(req: Request, res: Response): Promise<Order>=> {
-    const decoded: IUserPayload = jwt.decode(req.cookies.token,{complete: true})!;
-    const order: Order = {
-        user_id: decoded.payload.user[0].id,
-        status: req.body.status
-    }
+export const create = async(req: Request, res: Response): Promise<(Order | null)>=> {
     try{
-        const result = await Orders.create(order);
-        res.send(result);
-        return result;
+        if (req.cookies.token !== undefined) {
+            const decoded: IUserPayload = jwt.decode(req.cookies.token,{complete: true})!;
+            const order: Order = {
+                user_id: decoded.payload.user[0].id,
+                status: req.body.status
+            }
+            const result = await Orders.create(order);
+            res.send(result);
+            return result;
+        }
+        else{
+            res.status(401);
+            throw new Error(`Error happened while retrieving orders from database`);
+        }
     }
     catch(err){
-        throw new Error(`Error happened while retrieving orders from database: ${err}`);
+        res.send(err);
+        return null;
     }
 
 }
