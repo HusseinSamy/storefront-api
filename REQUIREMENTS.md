@@ -1,42 +1,42 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
-
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
-
 ## API Endpoints
+
 #### Products
-- Index     --------------------------------Done--------------------------------                                                       
-- Show     --------------------------------Done--------------------------------
-- Create [token required]     --------------------------------Done--------------------------------
-- [OPTIONAL] Top 5 most popular products     --------------------------------Done--------------------------------
-- [OPTIONAL] Products by category (args: product category)     --------------------------------Done--------------------------------
-
+* Index - GET /products     
+* Show - GET /products/:id     
+* Create [token required] - POST /products
+* Top 5 most popular products - GET /products/top5
+- Products by category - GET /products/productByCategory    
 #### Users
-- Index [token required]     --------------------------------Done--------------------------------
-- Show  [token required]     --------------------------------Done--------------------------------
-- Create[token required]     --------------------------------Done--------------------------------
+* Index [token required] - GET /users      
+* Show  [token required] - GET /users/:id
+* Create - POST /users
 
 #### Orders
-- Current Order by user (args: user id)[token required]     --------------------------------Done--------------------------------
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]     --------------------------------Done--------------------------------
-
+* Current Order by user - GET /orders/:id/products     
+* Completed Orders by user [token required] - GET /orders/completedOrdersByUser/:id
+* Orders of certain user - GET /orders/:id
+* Create an order for user - POST /orders
 ## Data Shapes
-#### Product
--  id     --------------------------------Done--------------------------------
-- name     --------------------------------Done--------------------------------
-- price     --------------------------------Done--------------------------------
-- [OPTIONAL] category     --------------------------------Done--------------------------------
 
-#### User
-- id     --------------------------------Done--------------------------------
-- firstName     --------------------------------Done--------------------------------
-- lastName     --------------------------------Done--------------------------------
-- password     --------------------------------Done--------------------------------
+#### Product Table Schema
+* id (Primary key)
+* name
+* price
+* category
 
-#### Orders
-- id     --------------------------------Done--------------------------------
-- id of each product in the order     --------------------------------Done--------------------------------
-- quantity of each product in the order     --------------------------------Done--------------------------------
-- user_id     --------------------------------Done--------------------------------
-- status of order (active or complete)     --------------------------------Done--------------------------------
+#### User Table Schema
+* id (Primary key)
+* firstName 
+* lastName
+* password
 
+#### Orders Table Schema
+* id (Primary key)
+* user_id
+* status of order
+
+#### Products_Orders Table Schema
+* id (primary key)
+* user_id (foregin key references id column in users table)
+* product_id (foregin key references id column in products table)
+* product quantity
