@@ -4,7 +4,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Order, OrdersModel } from "../models/orders";
 import authorize from "../middlewares/authorization";
 import { getCompletedOrdersByUser } from "../services/dashboard";
-import { resourceLimits } from "worker_threads";
 
 dotenv.config();
 
@@ -37,9 +36,9 @@ export const create = async(req: Request, res: Response): Promise<(Order | null)
         if (req.cookies.token !== undefined) {
             const decoded: IUserPayload = jwt.decode(req.cookies.token,{complete: true})!;
             const order: Order = {
-                user_id: decoded.payload.user[0].id,
+                user_id: decoded.payload.user.id,
                 status: req.body.status
-            }
+            };
             const result = await Orders.create(order);
             res.send(result);
             return result;
