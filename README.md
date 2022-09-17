@@ -1,5 +1,5 @@
 # Setup the project
-* run `npm i
+* run `npm i`
 * setup the database
 * add .env file to root folder
 * add database.json file to root folder
