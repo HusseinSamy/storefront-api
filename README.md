@@ -59,4 +59,6 @@ CREATE USER storefront_user WITH PASSWORD '123456789';
 
 -- Grant privileges to user
 GRANT ALL PRIVILEGES ON DATABASE "storefront_dev" TO storefront_user;
+GRANT ALL PRIVILEGES ON DATABASE "storefront_test" TO storefront_user;
+
 ```
