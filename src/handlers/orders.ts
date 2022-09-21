@@ -72,13 +72,18 @@ export const completedOrdersByUser = async (
   }
 };
 export const addProduct = async (req: Request, res: Response) => {
-  const orderId: number = +req.params.id;
-  const productId: number = +req.body.product;
-  const quantity: number = +req.body.quantity;
-
-  const result = await Orders.addProduct(orderId, productId, quantity);
-  res.send(result);
-  return result;
+  try {
+    const orderId: number = +req.params.id;
+    const productId: number = +req.body.product;
+    const quantity: number = +req.body.quantity;
+    const result = await Orders.addProduct(orderId, productId, quantity);
+    res.send(result);
+    return result;
+  } catch (err) {
+    throw new Error(
+      `Error happened while adding products to the database: ${err}`
+    );
+  }
 };
 
 const ordersRouter = (app: Router) => {
