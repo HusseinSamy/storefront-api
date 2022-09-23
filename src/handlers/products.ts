@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import ProductModel, { Product } from "../models/products";
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
 import {
   getProductByCategory,
   getTop5PopularProducts,
