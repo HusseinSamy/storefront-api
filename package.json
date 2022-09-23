@@ -6,9 +6,9 @@
   "scripts": {
     "start": "npm run build && node ./dist/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "build":"npx tsc",
-    "jasmine":"npx jasmine",
-    "test": "cross-env ENV=test db-migrate --env test up && npx jasmine && db-migrate db:drop test"
+    "build": "npx tsc",
+    "jasmine": "npx jasmine",
+    "test": "set ENV=test&& db-migrate --env test up && npx jasmine && db-migrate --env test reset"
   },
   "author": "Udacity",
   "license": "ISC",
