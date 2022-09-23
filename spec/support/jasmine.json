@@ -1,9 +1,7 @@
 {
   "spec_dir": "dist/tests",
   "spec_files": ["**/*[sS]pec.?(m)js"],
-  "helpers": [
-    "helpers/**/*.js"
-  ],
+  "helpers": ["helpers/**/*.js"],
   "reporters": [
     {
       "name": "jasmine-spec-reporter#SpecReporter",
@@ -13,5 +11,5 @@
     }
   ],
   "stopSpecOnExpectationFailure": false,
-  "random": true
+  "random": false
 }
