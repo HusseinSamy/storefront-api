@@ -20,21 +20,21 @@ interface IUserPayload extends JwtPayload {
 
 const Orders = new OrdersModel();
 
-export const show = async (req: Request, res: Response): Promise<Order[]> => {
+export const show = async (
+  req: Request,
+  res: Response<Order[] | string>
+): Promise<Response<Order[] | string>> => {
   try {
     const result = await Orders.show(+req.params.id);
-    res.send(result);
-    return result;
+    return res.send(result);
   } catch (err) {
-    throw new Error(
-      `Error happened while retrieving orders from database: ${err}`
-    );
+    return res.send(`Error happened while retrieving orders from database`);
   }
 };
 export const create = async (
   req: Request,
-  res: Response
-): Promise<Order | null> => {
+  res: Response<Order | string>
+): Promise<Response<Order | string>> => {
   try {
     if (req.cookies.token !== undefined) {
       const decoded: IUserPayload = jwt.decode(req.cookies.token, {
@@ -45,50 +45,47 @@ export const create = async (
         status: req.body.status,
       };
       const result = await Orders.create(order);
-      res.send(result);
-      return result;
+      return res.send(result);
     } else {
       res.status(401);
       throw new Error(`Error happened while retrieving orders from database`);
     }
   } catch (err) {
-    res.send(err);
-    return null;
+    return res.send((err as Error).message);
   }
 };
 
 export const completedOrdersByUser = async (
   req: Request,
-  res: Response
-): Promise<Order[]> => {
+  res: Response<Order[] | string>
+): Promise<Response<Order[] | string>> => {
   try {
     const result = await getCompletedOrdersByUser(+req.params.id);
-    res.send(result);
-    return result;
+    return res.send(result);
   } catch (err) {
-    throw new Error(
-      `Error happened while retrieving orders of user from database: ${err}`
+    return res.send(
+      `Error happened while retrieving orders of user from database`
     );
   }
 };
-export const addProduct = async (req: Request, res: Response) => {
+export const addProduct = async (
+  req: Request,
+  res: Response<Order[] | string>
+): Promise<Response<Order[] | string>> => {
   try {
     const orderId: number = +req.params.id;
     const productId: number = +req.body.product;
     const quantity: number = +req.body.quantity;
     const result = await Orders.addProduct(orderId, productId, quantity);
-    res.send(result);
-    return result;
+    return res.send(result);
   } catch (err) {
-    throw new Error(
-      `Error happened while adding products to the database: ${err}`
-    );
+    return res.send(`Error happened while adding products to the database`);
   }
 };
 
 const ordersRouter = (app: Router) => {
   app.get("/completedOrdersByUser/:id", authorize, completedOrdersByUser);
-  app.get("/:id/products", authorize, addProduct);
+  app.post("/:id/products", authorize, addProduct);
   app.get("/:id", authorize, show);
   app.post("/", authorize, create);
 };
