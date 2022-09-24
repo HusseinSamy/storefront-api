@@ -7,35 +7,36 @@ import authorize from "../middlewares/authorization";
 dotenv.config();
 const Users = new UsersModel();
 
-const index = async (_req: Request, res: Response): Promise<User[]> => {
+const index = async (
+  _req: Request,
+  res: Response<User[] | string>
+): Promise<Response<User[] | string>> => {
   try {
     const result = await Users.index();
-    res.send(result);
-    return result;
+    return res.send(result);
   } catch (err) {
-    res.status(401);
-    res.send(`Error happened while returning user with id: ${err}`);
-    throw new Error(`Error happened while returning all users: ${err}`);
+    return res.status(401).send(`Error happened while returning users`);
   }
 };
 
-const show = async (req: Request, res: Response): Promise<User> => {
+const show = async (
+  req: Request,
+  res: Response<User | string>
+): Promise<Response<User | string>> => {
   try {
     const result = await Users.show(+req.params.id);
-    res.send(result);
-    return result;
+    return res.send(result);
   } catch (err) {
-    res.status(401);
-    res.send(
-      `Error happened while returning user with id ${req.params.id}: ${err}`
-    );
-    throw new Error(
-      `Error happened while returning user with id ${req.params.id}: ${err}`
-    );
+    return res
+      .status(401)
+      .send(`Error happened while returning user with id ${req.params.id}`);
   }
 };
 
-const create = async (req: Request, res: Response): Promise<User | null> => {
+const create = async (
+  req: Request,
+  res: Response<User | string>
+): Promise<Response<User | string>> => {
   try {
     if (
       req.body.firstName !== undefined &&
@@ -49,16 +50,12 @@ const create = async (req: Request, res: Response): Promise<User | null> => {
       };
       const newUser = await Users.create(user);
       const token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET!);
-      res.cookie("token", token, { httpOnly: true });
-      res.send(token);
-      return newUser;
+      return res.cookie("token", token, { httpOnly: true }).send(token);
     } else {
-      res.status(400);
-      throw new Error(`Please enter valid body params`);
+      return res.status(400).send(`Please enter valid body params`);
     }
   } catch (err) {
-    res.send((err as Error).message);
-    return null;
+    return res.send((err as Error).message);
   }
 };
 const usersRouter = (app: Router) => {
