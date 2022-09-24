@@ -10,7 +10,7 @@ export class OrdersModel {
   //Token required
   async show(id: number): Promise<Order[]> {
     const connection = await database.connect();
-    const sql = `SELECT * FROM orders WHERE user_id = $1 LIMIT 1`;
+    const sql = `SELECT * FROM orders WHERE user_id = $1`;
     const result = await connection.query(sql, [id]);
     connection.release();
     return result.rows;
